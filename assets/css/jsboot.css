@@ -30,8 +30,25 @@ p {
 }
 
 button {
-  font-family: 'Avenir', sans-serif;
-  font-size: 1rem;
+  background-size: 200% auto;
   border-radius: 5px;
+  /* box-shadow: 0 0 20px #eee; */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  cursor: pointer;
+  display: inline-block;
+  font-family: 'Avenir', sans-serif;
+  font-size: 1.25rem;
   padding: 5px 20px;
+  transition: 0.5s;
+  transition: all 0.3s ease-in-out;
+  width: 200px;
+}
+
+button:hover{
+  box-shadow: 0 0 15px rgb(38, 248, 150);
+  /* box-shadow: 0 2px 3px rgba(0,0,0,0.1), 0 2px 3px rgba(0,0,0,0.4); */
+}
+
+button:focus {
+  outline: 0;
 }
