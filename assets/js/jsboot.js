@@ -29,6 +29,7 @@ function jsBoot() {
   let hits = 0;
   let guesses = 0;
   let guess;
+  let guessedAlready = [];
 
   // Prompt for player input until enemy ship is sunk
   while (isSunk === false) {
@@ -36,9 +37,14 @@ function jsBoot() {
     console.log(guess);
 
     if (guess < 0 || guess > 6 || guess == '') {
-      alert('Numbers between 0 and 6 only!');
+      alert('ERROR: Numbers between 0 and 6 only!');
+      // Refuse user input that has been used already
+    } else if (guessedAlready.indexOf(guess) !== -1) {
+      alert('ERROR: This position has already been scanned!');
     } else {
       guesses++;
+      guessedAlready.push(guess)
+      console.log("what the user has guessed already: " + guessedAlready);
 
       if (guess == location1 || guess == location2 || guess == location3) {
         alert('Ship has been hit!');
