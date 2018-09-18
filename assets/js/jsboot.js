@@ -7,7 +7,12 @@ function randomNumber(min, max) {
 function jsBoot() {
   // DOM elements
   const main = document.querySelector('main');
-  const results = document.querySelector('h2');
+  const results = document.querySelector('.stats');
+
+  // Remove previous player statistics from the DOM, if any
+  if (results) {
+    main.removeChild(results);
+  }
 
   // Random enemy ship location
   const location1 = randomNumber(0, 4);
@@ -20,15 +25,10 @@ function jsBoot() {
   console.log(location3);
 
   // Variables to be updated by user input
-  var isSunk = false;
-  var hits = 0;
-  var guesses = 0;
-  var guess;
-
-  // Remove previous player statistics from the DOM, if any
-  if (results) {
-    main.removeChild(results);
-  }
+  let isSunk = false;
+  let hits = 0;
+  let guesses = 0;
+  let guess;
 
   // Prompt for player input until enemy ship is sunk
   while (isSunk === false) {
@@ -58,6 +58,7 @@ function jsBoot() {
 
   // Add player statistics to the DOM
   const result = document.createElement('p');
+  result.className += 'stats';
   const resultContent = document.createTextNode(playerStats);
   result.appendChild(resultContent);
   main.appendChild(result);
