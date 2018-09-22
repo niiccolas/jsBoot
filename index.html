@@ -5,12 +5,27 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>jsBoot ⚓ Sea battle</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- FAVICONS -->
+  <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#2d89ef">
+  <meta name="theme-color" content="#ffffff">
+
   <!-- CSS -->
-  <link rel="stylesheet" type="text/css" media="screen" href="assets/css/jsboot.css" />
+  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="assets/css/animations.css">
+  <link rel="stylesheet" href="assets/css/board.css">
 </head>
 <body>
   <header>
     <h1>jsBoot ~ Sea battle</h1>
+    <div id="displayFeedback">
+        <p>You sank my battleship!</p>
+    </div>
     <!--  <input> without a <form> is valid HTML
           https://www.w3.org/TR/html401/interact/forms.html#form-controls
           17.2.1 Control types -->
@@ -111,9 +126,6 @@
         <td></td>
       </tr>
     </table>
-    <div id="displayFeedback">
-      <p>You sank my battleship!</p>
-    </div>
   </main>
 
   <footer>
