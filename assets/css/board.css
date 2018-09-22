@@ -1,0 +1,49 @@
+/*----------------------------------------*
+ * BOARD LAYOUT
+ *----------------------------------------*/
+
+table {
+  margin: 50px auto;
+  border-collapse: collapse;
+  width: calc(53px * 7); /* ? Cells are rendered with a size of 53*53! */
+}
+
+td {
+  width: 50px;
+  height: 50px;
+  border: 1px solid black;
+  position: relative;
+}
+
+.header_row {
+  position: absolute;
+  top: 1rem;
+  left: -2.5rem;
+  overflow: hidden;
+}
+
+.header_column {
+  position: absolute;
+  top: -2rem;
+  width: 100%;
+}
+
+/* Class added to cell when user guess is incorrect */
+.miss {
+  background: rgba(175, 238, 238, 0.7);
+}
+.miss::after {
+  content: "";
+  font-size: 2rem;
+}
+
+/* Class added to cell when user guesses is correct */
+.hit {
+  background: rgba(255, 18, 97, 0.2);
+}
+.hit::after {
+  content: "🔥";
+  font-size: 2rem;
+  position: relative;
+  top: 3px;
+}
