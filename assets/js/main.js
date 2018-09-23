@@ -17,3 +17,17 @@ function makeIDs() {
 }
 
 window.onload = makeIDs;
+
+// VIEW
+const view = {
+  displayMessage(msg) {
+    const feedback = document.getElementById('displayFeedback');
+    feedback.firstElementChild.innerText = msg;
+  },
+  displayHit(coord) {
+    document.getElementById(coord).setAttribute('class', 'hit');
+  },
+  displayMiss(coord) {
+    document.getElementById(coord).setAttribute('class', 'miss');
+  },
+};
