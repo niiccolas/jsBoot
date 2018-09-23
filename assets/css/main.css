@@ -50,7 +50,6 @@ input[type=button]:hover{
 }
 
 input[type=button]:active {
-  transition: 0;
   border: 1px solid red;
   position: relative;
   top: 1px;
@@ -62,7 +61,6 @@ input[type=button]:focus {
 }
 
 #displayFeedback p {
-  display: none;
   text-transform: uppercase;
   font-size: 2rem;
 }
