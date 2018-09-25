@@ -44,15 +44,23 @@ const model = {
   shipsSunk: 0, // if 3 then game is WON
   shipLength: 3,
   fire(loc) {
+    // Increment controller guess count at each fire attempt
+    controller.guesses++;
+    console.log(controller.guesses);
+
     for (let i = 0, s = this.ships; i < s.length; i++) {
       const ship = s[i];
       const locIndex = ship.positions.indexOf(loc);
       if (locIndex >= 0) {
         ship.hits[locIndex] = 'hit';
         view.displayHit(loc);
+
         if (this.isSunk(ship)) {
-          view.displayMessage('BATTLESHIP SUNK');
+          //
           this.shipsSunk++;
+          if (this.shipsSunk === this.numShips) {
+            view.displayMessage('Enemy fleet destroyed, you won!');
+          }
         }
         return true;
       }
@@ -69,3 +77,17 @@ const model = {
     return true;
   },
 };
+
+// CONTROLLER
+const controller = {
+  processGuess() {
+    // Get all cells as a NodeList
+    cells = document.querySelectorAll('td');
+    // Iterate over cells adding a click event listener
+    cells.forEach(x => x.addEventListener('click', y => model.fire(y.target.id)));
+  },
+  guesses: 0,
+};
+
+// This could be triggered by a "START GAME" button
+controller.processGuess();
