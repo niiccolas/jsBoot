@@ -1,4 +1,12 @@
 /*----------------------------------------*
+ * COLORS
+ *----------------------------------------*/
+:root {
+  --hit: rgba(255, 18, 97, 0.2);
+  --miss: rgba(166, 255, 255, 0.7);
+}
+
+/*----------------------------------------*
  * BOARD LAYOUT
  *----------------------------------------*/
 
@@ -13,6 +21,27 @@ td {
   height: 50px;
   border: 1px solid black;
   position: relative;
+  cursor: pointer;
+}
+
+td:hover {
+  box-sizing: border-box;
+  background: rgba(3, 253, 128, 0.521);
+  transition: 0.3s all  ease-in-out;
+}
+
+td.hit:hover {
+  cursor: not-allowed;
+  background: var(--hit);
+  box-shadow: none;
+  border: 1px solid black;
+}
+
+td.miss:hover {
+  cursor: not-allowed;
+  background: var(--miss);
+  box-shadow: none;
+  border: 1px solid black;
 }
 
 .header_row {
@@ -20,17 +49,20 @@ td {
   top: 1rem;
   left: -2.5rem;
   overflow: hidden;
+  cursor: default;
+  box-sizing: border-box;
 }
 
 .header_column {
   position: absolute;
   top: -2rem;
   width: 100%;
+  cursor: default;
 }
 
 /* Class added to cell when user guess is incorrect */
 .miss {
-  background: rgba(175, 238, 238, 0.7);
+  background: var(--miss);;
 }
 .miss::after {
   content: "";
@@ -39,7 +71,7 @@ td {
 
 /* Class added to cell when user guesses is correct */
 .hit {
-  background: rgba(255, 18, 97, 0.2);
+  background: var(--hit);;
 }
 .hit::after {
   content: "🔥";
