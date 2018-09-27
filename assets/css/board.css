@@ -24,6 +24,10 @@ td {
   cursor: pointer;
 }
 
+.victoryTd {
+  cursor: not-allowed;
+}
+
 td:hover {
   box-sizing: border-box;
   background: rgba(3, 253, 128, 0.521);

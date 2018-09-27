@@ -9,6 +9,10 @@ body {
   width: 70vw;
 }
 
+.victoryBody {
+  background: rgba(166,255,255,1);
+}
+
 h1 {
   margin-bottom: 2rem;
 }
