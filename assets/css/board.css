@@ -13,12 +13,12 @@
 table {
   margin: 50px auto;
   border-collapse: collapse;
-  width: calc(53px * 7); /* ? Cells are rendered with a size of 53*53! */
+  /* width: calc(53px * 7);  ? Cells are rendered with a size of 53*53! */
 }
 
 td {
-  width: 50px;
-  height: 50px;
+  width: 35px;
+  height: 35px;
   border: 1px solid black;
   position: relative;
   cursor: pointer;
@@ -50,8 +50,8 @@ td.miss:hover {
 
 .header_row {
   position: absolute;
-  top: 1rem;
-  left: -2.5rem;
+  top: .5rem;
+  left: -2rem;
   overflow: hidden;
   cursor: default;
   box-sizing: border-box;
@@ -79,7 +79,7 @@ td.miss:hover {
 }
 .hit::after {
   content: "🔥";
-  font-size: 2rem;
+  font-size: 1.5rem;
   position: relative;
   top: 3px;
 }
