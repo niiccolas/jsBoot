@@ -26,108 +26,20 @@
     <!--  <input> without a <form> is valid HTML
           https://www.w3.org/TR/html401/interact/forms.html#form-controls
           17.2.1 Control types -->
+          <h2>Choose a grid size and press start:</h2>
+          <input type="number" name="cols" id="num_cols" value="10" min="5" max="26">X
+          <input type="number" name="rows" id="num_rows" value="10" min="5" max="26">
+          <input type="button" id="create_grid" value="Start!">
   </header>
 
   <main>
-    <table>
-      <tr>
-        <td>
-          <div class="header_row">A</div>
-          <div class="header_column">1</div>
-        </td>
-        <td>
-          <div class="header_column">2</div>
-        </td>
-        <td>
-          <div class="header_column">3</div>
-        </td>
-        <td>
-          <div class="header_column">4</div>
-        </td>
-        <td>
-          <div class="header_column">5</div>
-        </td>
-        <td>
-          <div class="header_column">6</div>
-        </td>
-        <td>
-          <div class="header_column">7</div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div class="header_row">B</div>
-        </td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>
-          <div class="header_row">C</div>
-        </td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>
-          <div class="header_row">D</div>
-        </td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>
-          <div class="header_row">E</div>
-        </td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>
-          <div class="header_row">F</div>
-        </td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>
-          <div class="header_row">G</div>
-        </td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-    </table>
-    <div id="displayFeedback">
+    <div id="gameGrid"></div> <!-- hosts the js generated grid -->
+    <div id="displayFeedback"> <!-- displays messages to user -->
         <p class="slide-in-fwd-center"></p>
     </div>
   </main>
 
   <footer>
-
   </footer>
   <!-- JS -->
   <script src="assets/js/main.js"></script>
