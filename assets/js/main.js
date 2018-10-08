@@ -1,20 +1,40 @@
-// //////////////////////////////
-// MODEL
-// //////////////////////////////
+// * ####################################
+// * Model
+// * ####################################
 const model = {
-  boardSize: 7,
-  numShips: 3, // ? Redudant with ships.length ?
+  rows: document.getElementById('num_rows').value,
+  columns: document.getElementById('num_cols').value,
+  numShips: 3, // total number of ships
   ships: [
     { positions: ['00', '00', '00'], hits: [] },
     { positions: ['00', '00', '00'], hits: [] },
     { positions: ['00', '00', '00'], hits: [] },
   ],
   shipsSunk: 0,
-  shipLength: 3,
+  shipLength: 4,
+  guesses: 0, // tracks the number of guesses from the fire() method
+
+  createGrid() {
+    this.createTable(this.rows, this.columns);
+  },
+
+  createTable(rows = 8, cols = 8) {
+    const gameGrid = document.getElementById('gameGrid'); // capture the container <div>
+    const table = document.createElement('table'); // create the <table> element
+    gameGrid.innerHTML = ''; // clean the existing grid, if any
+
+    // populate the <table> with ...
+    for (let i = 0; i < rows; i++) { // ... as many <tr> as passed to "rows"
+      const tr = table.insertRow();
+      for (let j = 0; j < cols; j++) { // ... as many <td> as passed to "cols"
+        tr.insertCell();
+      }
+    }
+    gameGrid.appendChild(table); // inject newly created <table> into the container <div>
+  },
 
   fire(loc) {
-    // Keep track of each correct guess for stats display
-    controller.guesses++;
+    controller.guesses++; // increment the guesses property
 
     for (let i = 0, s = this.ships; i < s.length; i++) {
       const ship = s[i];
@@ -24,7 +44,6 @@ const model = {
         view.displayHit(loc);
 
         if (this.isSunk(ship)) {
-          //
           this.shipsSunk++;
           if (this.shipsSunk === this.numShips) {
             view.displayVictory('Enemy fleet destroyed, you won!');
@@ -60,23 +79,22 @@ const model = {
   generateShip() {
     const randomDirection = Math.floor(Math.random() * 2); // 0 for vertical 1 for horizontal
     let row;
-    let column;
+    let col;
 
     if (randomDirection) {
-      row = Math.floor(Math.random() * this.boardSize);
-      column = Math.floor(Math.random() * (this.boardSize - (this.shipLength + 1)));
+      row = Math.floor(Math.random() * this.rows);
+      col = Math.floor(Math.random() * (this.columns - (this.shipLength + 1)));
     } else {
-      row = Math.floor(Math.random() * (this.boardSize - (this.shipLength + 1)));
-      column = Math.floor(Math.random() * this.boardSize);
+      row = Math.floor(Math.random() * (this.rows - (this.shipLength + 1)));
+      col = Math.floor(Math.random() * this.columns);
     }
 
     const newShipLocations = [];
     for (let i = 0; i < this.shipLength; i++) {
-      // ship.push(parseInt(ship[i]) + 1 + '');
       if (randomDirection) {
-        newShipLocations.push(row + '' + (column + i));
+        newShipLocations.push(row + '' + (col + i));
       } else {
-        newShipLocations.push((row + i) + '' + column);
+        newShipLocations.push((row + i) + '' + col);
       }
     }
     return newShipLocations;
@@ -84,7 +102,7 @@ const model = {
 
   collision(locations) {
     for (let i = 0; i < this.numShips; i++) {
-      let ship = this.ships[i];
+      const ship = this.ships[i];
       for (let j = 0; j < locations.length; j++) {
         if (ship.positions.indexOf(locations[j]) >= 0) {
           return true;
@@ -99,17 +117,15 @@ const model = {
   },
 };
 
-// //////////////////////////////
-// VIEW
-// //////////////////////////////
+// * ####################################
+// * View
+// * ####################################
 const view = {
   displayVictory(msg) {
-    const feedback = document.getElementById('displayFeedback');
+    const feedback = document.getElementById('displayFeedback'); // Display the victory message argument
     feedback.firstElementChild.innerText = msg;
-    // Change background to clear blue
-    document.querySelector('body').classList.add('victoryBody');
-    // Set <td>s hover cursor to not-allowed
-    document.querySelectorAll('td').forEach(x => x.classList.add('victoryTd'));
+    document.querySelector('body').classList.add('victoryBody'); // Change background to clear blue
+    document.querySelectorAll('td').forEach(x => x.classList.add('victoryTd')); // Set <td>s hover cursor to not-allowed
   },
 
   displayHit(loc) {
@@ -120,47 +136,81 @@ const view = {
     document.getElementById(loc).setAttribute('class', 'miss');
   },
 
+  makeHeaderClasses() {
+    // helper alphabet array for cols naming
+    const alphabet = [...Array(26).keys()].map(i => String.fromCharCode(i + 97));
+    const columns = document.querySelectorAll('td');
+    const rows = document.querySelectorAll('tr');
+
+    for (let i = 0; i < model.rows; i++) {
+      const rowHeader = document.createElement('div'); // create <div> container for ROW headers
+      const rowHeaderContent = document.createTextNode(i + 1); // fill header with row number +1
+      rowHeader.appendChild(rowHeaderContent); //
+      rowHeader.classList.add('header_row');
+      rows[i].firstElementChild.appendChild(rowHeader);
+    }
+
+    for (let i = 0; i < model.columns; i++) {
+      const colHeader = document.createElement('div'); // create <div> container for COL headers
+      // insert alphabetic letter as column title
+      const colTitle = document.createTextNode(alphabet[i].toLocaleUpperCase());
+      colHeader.appendChild(colTitle);
+      colHeader.classList.add('header_column'); // add headers CSS class
+      columns[i].appendChild(colHeader);
+    }
+  },
+
   // Populate existing <td> cells with unique number IDs
   makeIDs() {
+    document.querySelector('body').classList.remove('victoryBody'); // remove .victory blue layer, if any
     const rows = document.getElementsByClassName('header_row');
     const columns = document.getElementsByClassName('header_column');
     const cells = document.querySelectorAll('td');
-    // Generate IDs from rows and columns length
     const board = [];
-    for (let i = 0; i < rows.length; i++) {
+    for (let i = 0; i < rows.length; i++) { // Generate IDs from rows and columns length
       for (let j = 0; j < columns.length; j++) {
         board.push(`${i }${j}`);
       }
     }
-    // Tag each cell with a board ID
-    cells.forEach((e, index) => {
+    cells.forEach((e, index) => { // Tag each cell with a board ID
       e.setAttribute('id', board[index]);
     });
   },
 };
 
-// //////////////////////////////
-// CONTROLLER
-// //////////////////////////////
+// * ####################################
+// * Controller
+// * ####################################
 const controller = {
   processGuess() {
-    // Get all cells as a NodeList
-    cells = document.querySelectorAll('td');
-    // Iterate over cells adding a click event listener
-    cells.forEach(x => x.addEventListener('click', y => model.fire(y.target.id)));
+    cells = document.querySelectorAll('td'); // capture all <td>s as a NodeList
+    cells.forEach(x => x.addEventListener('click', y => model.fire(y.target.id))); // add to <td>s click event listener that runs the fire() method on the clicked target id
   },
-  guesses: 0,
+
+  startGame() {
+    const createBtn = document.getElementById('create_grid');
+    createBtn.onclick = () => init();
+  },
+
+  gridSize() {
+    model.rows = document.getElementById('num_rows').value; // update model with number of rows from user input
+    model.columns = document.getElementById('num_cols').value; // update model with number of columns from user input
+  },
 };
 
-// //////////////////////////////
-// Auto-starting the game onload
-// //////////////////////////////
+// * ####################################
+// * Starting all game methods onload
+// * ####################################
 function init() {
-  model.generateShipLocations()
+  controller.gridSize(); // set grid size to default or according to user input
+  controller.startGame(); //
+  model.createGrid();
+  model.generateShipLocations();
+  view.makeHeaderClasses();
   view.makeIDs();
   controller.processGuess();
-  // Cheat codes ON, reveal ships positions:
-  model.ships.forEach(x => console.log(x.positions));
+  // ! Cheat code: Reveal ships positions in the console
+  model.ships.forEach(x => console.table(x.positions));
 }
 
 window.onload = init;
