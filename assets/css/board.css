@@ -21,7 +21,7 @@ td {
   height: 35px;
   border: 1px solid black;
   position: relative;
-  cursor: pointer;
+  cursor: crosshair;
 }
 
 .victoryTd {
@@ -35,14 +35,14 @@ td:hover {
 }
 
 td.hit:hover {
-  cursor: not-allowed;
+  cursor: default;
   background: var(--hit);
   box-shadow: none;
   border: 1px solid black;
 }
 
 td.miss:hover {
-  cursor: not-allowed;
+  cursor: default;
   background: var(--miss);
   box-shadow: none;
   border: 1px solid black;
