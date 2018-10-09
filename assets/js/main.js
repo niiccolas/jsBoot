@@ -196,6 +196,13 @@ const controller = {
     model.rows = document.getElementById('num_rows').value; // update model with number of rows from user input
     model.columns = document.getElementById('num_cols').value; // update model with number of columns from user input
   },
+
+  playerAccuracy() {
+    // number of ships multiplied by their length is the ideal num. of guesses
+    const idealGuesses = model.numShips * model.shipLength;
+    // return a shooting accuracy percentage without decimals
+    return ((idealGuesses / model.guesses) * 100).toFixed();
+  },
 };
 
 // * ####################################
