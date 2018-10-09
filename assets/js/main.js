@@ -34,7 +34,7 @@ const model = {
   },
 
   fire(loc) {
-    controller.guesses++; // increment the guesses property
+    model.guesses++; // increment the guesses property
 
     for (let i = 0, s = this.ships; i < s.length; i++) {
       const ship = s[i];
