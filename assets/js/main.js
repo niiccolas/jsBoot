@@ -46,7 +46,7 @@ const model = {
         if (this.isSunk(ship)) {
           this.shipsSunk++;
           if (this.shipsSunk === this.numShips) {
-            view.displayVictory(`Enemy fleet destroyed<br>${controller.playerAccuracy()}% shooting accuracy<br> you won!`);
+            view.displayVictory(`Enemy fleet destroyed<br>${controller.playerAccuracy()}% shooting accuracy<br> You won!`);
           }
         }
         return true;
@@ -122,7 +122,7 @@ const model = {
 // * ####################################
 const view = {
   displayVictory(msg) {
-    const feedback = document.getElementById('displayFeedback'); // Display the victory message argument
+    const feedback = document.getElementById('display-victory-msg'); // Display the victory message argument
     feedback.firstElementChild.innerHTML = msg;
     document.querySelector('body').classList.add('victoryBody'); // Change background to clear blue
     document.querySelectorAll('td').forEach(x => x.classList.add('victoryTd')); // Set <td>s hover cursor to not-allowed

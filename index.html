@@ -22,24 +22,27 @@
 </head>
 <body>
   <header>
-    <h1>jsBoot ~ Sea battle</h1>
+    <h1>jsBoot sea battle</h1>
+    <h2>Choose a grid size and press start</h2>
+  </header>
+  <nav id="set-grid-size">
     <!--  <input> without a <form> is valid HTML
           https://www.w3.org/TR/html401/interact/forms.html#form-controls
           17.2.1 Control types -->
-          <h2>Choose a grid size and press start:</h2>
           <input type="number" name="cols" id="num_cols" value="10" min="5" max="26">X
           <input type="number" name="rows" id="num_rows" value="10" min="5" max="26">
           <input type="button" id="create_grid" value="Start!">
-  </header>
+  </nav>
 
   <main>
     <div id="gameGrid"></div> <!-- hosts the js generated grid -->
-    <div id="displayFeedback"> <!-- displays messages to user -->
-        <p class="slide-in-fwd-center"></p>
-    </div>
   </main>
 
+  <div id="display-victory-msg"> <!-- displays messages to user -->
+      <p class="slide-in-fwd-center"></p>
+  </div>
   <footer>
+    <!-- <p></p> -->
   </footer>
   <!-- JS -->
   <script src="assets/js/main.js"></script>
