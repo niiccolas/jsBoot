@@ -45,6 +45,10 @@ const model = {
 
         if (this.isSunk(ship)) {
           this.shipsSunk++;
+
+          // * * * * * * * * *
+          // * VICTORY
+          // * * * * * * * * *
           if (this.shipsSunk === this.numShips) {
             view.displayVictory(`Enemy fleet destroyed<br>${controller.playerAccuracy()}% shooting accuracy<br> You won!`);
           }
@@ -115,6 +119,12 @@ const model = {
   randomNum(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
   },
+
+  blankSlate() {
+    this.shipsSunk = 0;
+    this.guesses = 0;
+    this.ships.forEach(x => x.hits = []);
+  }
 };
 
 // * ####################################
@@ -216,13 +226,14 @@ const controller = {
 function init() {
   controller.gridSize(); // set grid size to default or according to user input
   controller.startGame(); //
+  model.blankSlate(); // reset model tracking properties to zero
   model.createGrid();
   model.generateShipLocations();
   view.makeHeaderClasses();
   view.makeIDs();
   controller.processGuess();
   // ! Cheat code: Reveal ships positions in the console
-  model.ships.forEach(x => console.table(x.positions));
+  model.ships.forEach(x => console.log(x.positions));
 }
 
 window.onload = init;
