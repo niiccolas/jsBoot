@@ -92,9 +92,9 @@ const model = {
     const newShipLocations = [];
     for (let i = 0; i < this.shipLength; i++) {
       if (randomDirection) {
-        newShipLocations.push(row + '' + (col + i));
+        newShipLocations.push(`${row  }${  col + i}`);
       } else {
-        newShipLocations.push((row + i) + '' + col);
+        newShipLocations.push(`${row + i  }${  col}`);
       }
     }
     return newShipLocations;
@@ -126,6 +126,11 @@ const view = {
     feedback.firstElementChild.innerHTML = msg;
     document.querySelector('body').classList.add('victoryBody'); // Change background to clear blue
     document.querySelectorAll('td').forEach(x => x.classList.add('victoryTd')); // Set <td>s hover cursor to not-allowed
+
+    // Set Start Game button to "New Game" with pulsating animation
+    const startBtn = document.getElementById('start-game-btn');
+    startBtn.value = 'NEW GAME?';
+    startBtn.classList.add('pulsate-fwd');
   },
 
   displayHit(loc) {
@@ -169,7 +174,7 @@ const view = {
     const board = [];
     for (let i = 0; i < rows.length; i++) { // Generate IDs from rows and columns length
       for (let j = 0; j < columns.length; j++) {
-        board.push(`${i }${j}`);
+        board.push(`${i}${j}`);
       }
     }
     cells.forEach((e, index) => { // Tag each cell with a board ID
@@ -188,8 +193,8 @@ const controller = {
   },
 
   startGame() {
-    const createBtn = document.getElementById('create_grid');
-    createBtn.onclick = () => init();
+    const startGameBtn = document.getElementById('start-game-btn');
+    startGameBtn.onclick = () => init();
   },
 
   gridSize() {
