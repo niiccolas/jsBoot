@@ -34,6 +34,11 @@ h2 {
   font-weight: 400;
 }
 
+main {
+  /* force display on grid row n°2 due to Grid Size selector getting display: none */
+  grid-row: 2;
+}
+
 /*----------------------------------------*
  * INTERACTIVE user input & visual feedback
  *----------------------------------------*/
@@ -42,6 +47,8 @@ h2 {
   align-self: end;
   padding-bottom: 1rem;
   padding-top: 1rem;
+  /* Difficulty/Grid size selector animation */
+  transition: 1s opacity ease;
 }
 
 input {
@@ -93,6 +100,16 @@ input[type=button]:focus {
 #display-victory-msg {
   text-align: left;
 
+  /* force display on grid row n°2 due to Grid Size selector getting display: none */
+  grid-row: 2;
+}
+
+.hidden {
+  display: none;
+}
+
+.no-opacity {
+  opacity: 0;
 }
 
 /*----------------------------------------*

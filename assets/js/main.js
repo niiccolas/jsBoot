@@ -122,8 +122,7 @@ const model = {
 // * ####################################
 const view = {
   displayVictory(msg) {
-    const feedback = document.getElementById('display-victory-msg'); // Display the victory message argument
-    feedback.firstElementChild.innerHTML = msg;
+    document.getElementById('display-victory-msg').firstElementChild.innerHTML = msg; // Display the victory message argument
     document.querySelector('body').classList.add('victoryBody'); // Change background to clear blue
     document.querySelectorAll('td').forEach(x => x.classList.add('victoryTd')); // Set <td>s hover cursor to not-allowed
 
@@ -131,6 +130,11 @@ const view = {
     const startBtn = document.getElementById('start-game-btn');
     startBtn.value = 'NEW GAME?';
     startBtn.classList.add('pulsate-fwd');
+
+    // Bring back USER INPUT area to full opacity...
+    const gridSizeInput = document.getElementById('set-grid-size');
+    // ... and to display: block
+    gridSizeInput.classList.remove('no-opacity', 'hidden');
   },
 
   displayHit(loc) {
@@ -181,6 +185,36 @@ const view = {
       e.setAttribute('id', board[index]);
     });
   },
+
+  // Display live game stats
+  liveStats() {
+    // view.displayVictory(`Enemy fleet destroyed<br>${controller.playerAccuracy()}% shooting accuracy<br> You won!`);
+
+    // Hide USER INPUT area...
+    const gridSizeInput = document.getElementById('set-grid-size');
+
+      gridSizeInput.classList.add('no-opacity');
+
+      // Add a setTimeout of transition time for #set-grid-size ID before hiding it
+      setTimeout(() => {
+        gridSizeInput.classList.add('hidden');
+      }, 1000);
+
+
+      // then remove it from the flow of the document
+      // gridSizeInput.style.
+
+    // get the live stats display mechanism
+    document.getElementById('live-stats');
+
+
+    let shootingAccuracy = document.createElement('p');
+    shootingAccuracy.innerText = model.guesses;
+    const statsDisplay = document.getElementById('display-victory-msg');
+    statsDisplay.appendChild(shootingAccuracy)
+
+
+  },
 };
 
 // * ####################################
@@ -214,15 +248,19 @@ const controller = {
 // * Starting all game methods onload
 // * ####################################
 function init() {
-  controller.gridSize(); // set grid size to default or according to user input
-  controller.startGame(); //
+  // HIDE START GAME BUTTON
+  view.liveStats()
+
+  // set grid size to default or according to user input
+  controller.gridSize();
+
   model.createGrid();
   model.generateShipLocations();
   view.makeHeaderClasses();
   view.makeIDs();
   controller.processGuess();
   // ! Cheat code: Reveal ships positions in the console
-  model.ships.forEach(x => console.table(x.positions));
+  model.ships.forEach(x => console.log(x.positions));
 }
 
-window.onload = init;
+window.onload = controller.startGame();
