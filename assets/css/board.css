@@ -9,17 +9,17 @@
 /*----------------------------------------*
  * BOARD LAYOUT
  *----------------------------------------*/
-
 table {
-  margin: 50px auto;
+  margin: 25px auto;
   border-collapse: collapse;
-  /* width: calc(53px * 7);  ? Cells are rendered with a size of 53*53! */
+  /* width: calc(53px * 7); */
+    /* Cells are rendered with a size of 53*53! */
 }
 
 td {
-  width: 35px;
-  height: 35px;
-  border: 1px dotted black;
+  width: 1.3rem;
+  height: 1.3rem;
+  border: 1px solid rgba(0, 0, 0, 0.5);
   position: relative;
   cursor: crosshair;
 }
@@ -49,17 +49,19 @@ td.miss:hover {
 }
 
 .header_row {
+  font-size: .8rem;
   position: absolute;
-  top: .5rem;
-  left: -2rem;
+  top: 0.1rem;
+  left: -1.5rem;
   overflow: hidden;
   cursor: default;
   box-sizing: border-box;
 }
 
 .header_column {
+  font-size: .8rem;
   position: absolute;
-  top: -2rem;
+  top: -1.5rem;
   width: 100%;
   cursor: default;
 }
@@ -77,9 +79,38 @@ td.miss:hover {
 .hit {
   background: var(--hit);;
 }
+
 .hit::after {
   content: "🔥";
-  font-size: 1.5rem;
+  font-size: calc(4) + 'em';
   position: relative;
   top: 3px;
+}
+
+/*----------------------------------------*
+ * RESPONSIVE LAYOUT:
+ * Smaller cells and fonts on mobile
+ *----------------------------------------*/
+ @media only screen and (min-width: 450px) {
+
+  td {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .header_row {
+    position: absolute;
+    top: .5rem;
+    left: -2rem;
+    overflow: hidden;
+    cursor: default;
+    box-sizing: border-box;
+  }
+
+  .header_column {
+    position: absolute;
+    top: -2rem;
+    width: 100%;
+    cursor: default;
+  }
 }
