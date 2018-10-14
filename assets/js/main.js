@@ -46,6 +46,10 @@ const model = {
 
         if (this.isSunk(ship)) {
           this.shipsSunk++;
+
+          // * * * * * * * * *
+          // * VICTORY
+          // * * * * * * * * *
           if (this.shipsSunk === this.numShips) {
             view.displayVictory(`<strong>You won!</strong><br>Enemy fleet destroyed<br>Shooting accuracy: <strong>${controller.playerAccuracy()}%</strong>`);
           }
@@ -116,6 +120,12 @@ const model = {
   randomNum(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
   },
+
+  blankSlate() {
+    this.shipsSunk = 0;
+    this.guesses = 0;
+    this.ships.forEach(x => x.hits = []);
+  }
 };
 
 // * ####################################
@@ -245,12 +255,11 @@ const controller = {
 // * Starting all game methods onload
 // * ####################################
 function init() {
-  // HIDE START GAME BUTTON
-  view.liveStats();
+  model.blankSlate(); // reset model tracking properties to zero
+  view.liveStats(); // Hide user input area and Show live game stats
 
-  // set grid size to default or according to user input
-  controller.gridSize();
-
+  controller.gridSize(); // set grid size to default or according to user input
+  controller.startGame(); // hook START GAME btn with click listener
   model.createGrid();
   model.generateShipLocations();
   view.makeHeaderClasses();
