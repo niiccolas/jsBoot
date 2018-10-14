@@ -34,23 +34,34 @@ const model = {
   },
 
   fire(loc) {
-    model.guesses++; // increment the guesses property
-    view.updateStats(); // increment the DOM turn counter
+    // Once a cell has been fired on, remove the click event listener
+    document.getElementById(loc).removeEventListener('click', controller.guessToFire);
+    // Increment the guesses property
+    model.guesses++;
+    // Update the DOM turn counter
+    view.updateStats();
 
+    // Check the ships array in the model
     for (let i = 0, s = this.ships; i < s.length; i++) {
       const ship = s[i];
+      // If current location (loc) matches a ship position
       const locIndex = ship.positions.indexOf(loc);
       if (locIndex >= 0) {
+        // We mark the ship with a hit
         ship.hits[locIndex] = 'hit';
+        // and update the DOM with the displayHit() view method
         view.displayHit(loc);
 
+        // THEN check if the ship has been sunk...
         if (this.isSunk(ship)) {
+          // ... if so increment the sunk ships count
           this.shipsSunk++;
 
-          // * * * * * * * * *
-          // * VICTORY
-          // * * * * * * * * *
+          // FINALLY, check if the number of sunk ships is equal to the total number of enemy ships...
           if (this.shipsSunk === this.numShips) {
+            // * * * * * * * * *
+            // * ...if so, then it's a VICTORY
+            // * * * * * * * * *
             view.displayVictory(`<strong>You won!</strong><br>Enemy fleet destroyed<br>Shooting accuracy: <strong>${controller.playerAccuracy()}%</strong>`);
           }
         }
@@ -229,8 +240,13 @@ const view = {
 // * ####################################
 const controller = {
   processGuess() {
-    const cells = document.querySelectorAll('td'); // Capture all <td>s as a NodeList
-    cells.forEach(x => x.addEventListener('click', y => model.fire(y.target.id))); // add to <td>s click event listener that runs the fire() method on the clicked target id
+    // Add to each <td> a click event listener that runs the guessToFire() method
+    document.querySelectorAll('td').forEach(x => x.addEventListener('click', this.guessToFire));
+  },
+
+  guessToFire(y) {
+    // This proxy method allows us, by making it accessible, to remove the event listener once a <td> has been clicked
+    model.fire(y.target.id);
   },
 
   startGame() {
