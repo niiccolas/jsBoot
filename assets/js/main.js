@@ -151,7 +151,6 @@ const view = {
     document.getElementById('victory-msg').classList.remove('hidden'); // remove "hidden" class from html recipient
 
     document.querySelector('body').classList.add('victoryBody'); // Change page background to clear blue
-    document.querySelectorAll('td').forEach(x => x.classList.add('victoryTd')); // ! Set <td>s hover cursor to not-allowed. Instead, the onhover listeners should be removed
 
     // Set Start Game button value to "New Game" with pulsating animation
     const startBtn = document.getElementById('start-game-btn');
