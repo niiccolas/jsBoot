@@ -35,7 +35,7 @@ const model = {
 
   fire(loc) {
     model.guesses++; // increment the guesses property
-    view.updateStats() // increment the DOM turn counter
+    view.updateStats(); // increment the DOM turn counter
 
     for (let i = 0, s = this.ships; i < s.length; i++) {
       const ship = s[i];
@@ -229,7 +229,7 @@ const view = {
 // * ####################################
 const controller = {
   processGuess() {
-    cells = document.querySelectorAll('td'); // capture all <td>s as a NodeList
+    const cells = document.querySelectorAll('td'); // Capture all <td>s as a NodeList
     cells.forEach(x => x.addEventListener('click', y => model.fire(y.target.id))); // add to <td>s click event listener that runs the fire() method on the clicked target id
   },
 
