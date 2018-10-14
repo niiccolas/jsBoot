@@ -34,14 +34,12 @@ td.hit:hover {
   cursor: default;
   background: var(--hit);
   box-shadow: none;
-  border: 1px solid black;
 }
 
 td.miss:hover {
   cursor: default;
   background: var(--miss);
   box-shadow: none;
-  border: 1px solid black;
 }
 
 .header_row {
