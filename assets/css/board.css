@@ -69,7 +69,7 @@ td.miss:hover {
   font-size: 2rem;
 }
 
-/* Class added to cell when user guesses is correct */
+/* Class added to cell when user guess is correct */
 .hit {
   background: var(--hit);;
 }
