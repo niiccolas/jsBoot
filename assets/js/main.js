@@ -62,6 +62,9 @@ const model = {
             // * * * * * * * * *
             // * ...if so, then it's a VICTORY
             // * * * * * * * * *
+            // Remove click event listener from remaining <td>
+            controller.prohibitGuess();
+            // Update the view with a victory message
             view.displayVictory(`<strong>You won!</strong><br>Enemy fleet destroyed<br>Shooting accuracy: <strong>${controller.playerAccuracy()}%</strong>`);
           }
         }
@@ -244,8 +247,13 @@ const controller = {
     document.querySelectorAll('td').forEach(x => x.addEventListener('click', this.guessToFire));
   },
 
+  prohibitGuess() {
+    // Remove from all <td> the click event listener that runs the guessToFire() method
+    document.querySelectorAll('td').forEach(x => x.removeEventListener('click', this.guessToFire));
+  },
+
   guessToFire(y) {
-    // This proxy method allows us, by making it accessible, to remove the event listener once a <td> has been clicked
+    // This proxy method allows us to remove the click event listener once a <td> has been clicked
     model.fire(y.target.id);
   },
 
