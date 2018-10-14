@@ -234,8 +234,8 @@ const controller = {
   },
 
   startGame() {
-    const startGameBtn = document.getElementById('start-game-btn');
-    startGameBtn.onclick = () => init();
+    // Hook the START button with a click event listener that runs init()
+    document.getElementById('start-game-btn').addEventListener('click', init);
   },
 
   gridSize() {
