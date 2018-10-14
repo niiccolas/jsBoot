@@ -111,9 +111,9 @@ const model = {
     const newShipLocations = [];
     for (let i = 0; i < this.shipLength; i++) {
       if (randomDirection) {
-        newShipLocations.push(`${row  }${  col + i}`);
+        newShipLocations.push(`${row}${col + i}`);
       } else {
-        newShipLocations.push(`${row + i  }${  col}`);
+        newShipLocations.push(`${row + i }${col}`);
       }
     }
     return newShipLocations;
@@ -139,7 +139,7 @@ const model = {
     this.shipsSunk = 0;
     this.guesses = 0;
     this.ships.forEach(x => x.hits = []);
-  }
+  },
 };
 
 // * ####################################
@@ -214,6 +214,9 @@ const view = {
 
   // Display live game stats
   liveStats() {
+    // 0. Remove existing victory message, if any
+    document.getElementById('victory-msg').innerHTML = '';
+
     // 1. Hide the grid size input area...
     const gridSizeInput = document.getElementById('set-grid-size');
     // ... with opacity ...
@@ -234,7 +237,7 @@ const view = {
 
   updateStats() {
     document.getElementById('turn').innerText = model.guesses;
-  }
+  },
 };
 
 // * ####################################
