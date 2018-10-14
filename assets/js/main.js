@@ -35,6 +35,7 @@ const model = {
 
   fire(loc) {
     model.guesses++; // increment the guesses property
+    view.updateStats() // increment the DOM turn counter
 
     for (let i = 0, s = this.ships; i < s.length; i++) {
       const ship = s[i];
@@ -46,7 +47,7 @@ const model = {
         if (this.isSunk(ship)) {
           this.shipsSunk++;
           if (this.shipsSunk === this.numShips) {
-            view.displayVictory(`Enemy fleet destroyed<br>${controller.playerAccuracy()}% shooting accuracy<br> You won!`);
+            view.displayVictory(`<strong>You won!</strong><br>Enemy fleet destroyed<br>Shooting accuracy: <strong>${controller.playerAccuracy()}%</strong>`);
           }
         }
         return true;
@@ -122,11 +123,13 @@ const model = {
 // * ####################################
 const view = {
   displayVictory(msg) {
-    document.getElementById('display-victory-msg').firstElementChild.innerHTML = msg; // Display the victory message argument
-    document.querySelector('body').classList.add('victoryBody'); // Change background to clear blue
-    document.querySelectorAll('td').forEach(x => x.classList.add('victoryTd')); // Set <td>s hover cursor to not-allowed
+    document.getElementById('victory-msg').innerHTML = msg; // ! Display method's argument as victory message (possible spaghetti code here)
+    document.getElementById('victory-msg').classList.remove('hidden'); // remove "hidden" class from html recipient
 
-    // Set Start Game button to "New Game" with pulsating animation
+    document.querySelector('body').classList.add('victoryBody'); // Change page background to clear blue
+    document.querySelectorAll('td').forEach(x => x.classList.add('victoryTd')); // ! Set <td>s hover cursor to not-allowed. Instead, the onhover listeners should be removed
+
+    // Set Start Game button value to "New Game" with pulsating animation
     const startBtn = document.getElementById('start-game-btn');
     startBtn.value = 'NEW GAME?';
     startBtn.classList.add('pulsate-fwd');
@@ -188,33 +191,27 @@ const view = {
 
   // Display live game stats
   liveStats() {
-    // view.displayVictory(`Enemy fleet destroyed<br>${controller.playerAccuracy()}% shooting accuracy<br> You won!`);
-
-    // Hide USER INPUT area...
+    // 1. Hide the grid size input area...
     const gridSizeInput = document.getElementById('set-grid-size');
+    // ... with opacity ...
+    gridSizeInput.classList.add('no-opacity');
+    // ... and removing it from the DOM entirely with a setTimeout delay.
+    setTimeout(() => {
+      gridSizeInput.classList.add('hidden');
+    }, 1000);
 
-      gridSizeInput.classList.add('no-opacity');
+    // 2. Show the liveStats div containing game information
+    const liveStats = document.getElementById('live-stats');
+    liveStats.classList.remove('hidden'); // brings back in the DOM
+    liveStats.classList.add('full-opacity'); // sets opacity to 1
 
-      // Add a setTimeout of transition time for #set-grid-size ID before hiding it
-      setTimeout(() => {
-        gridSizeInput.classList.add('hidden');
-      }, 1000);
-
-
-      // then remove it from the flow of the document
-      // gridSizeInput.style.
-
-    // get the live stats display mechanism
-    document.getElementById('live-stats');
-
-
-    let shootingAccuracy = document.createElement('p');
-    shootingAccuracy.innerText = model.guesses;
-    const statsDisplay = document.getElementById('display-victory-msg');
-    statsDisplay.appendChild(shootingAccuracy)
-
-
+    // Set the turn (guesses) counter to zero
+    this.updateStats();
   },
+
+  updateStats() {
+    document.getElementById('turn').innerText = model.guesses;
+  }
 };
 
 // * ####################################
@@ -249,7 +246,7 @@ const controller = {
 // * ####################################
 function init() {
   // HIDE START GAME BUTTON
-  view.liveStats()
+  view.liveStats();
 
   // set grid size to default or according to user input
   controller.gridSize();
