@@ -35,6 +35,7 @@ const model = {
 
   fire(loc) {
     model.guesses++; // increment the guesses property
+    view.updateStats() // increment the DOM turn counter
 
     for (let i = 0, s = this.ships; i < s.length; i++) {
       const ship = s[i];
@@ -50,7 +51,7 @@ const model = {
           // * VICTORY
           // * * * * * * * * *
           if (this.shipsSunk === this.numShips) {
-            view.displayVictory(`Enemy fleet destroyed<br>${controller.playerAccuracy()}% shooting accuracy<br> You won!`);
+            view.displayVictory(`<strong>You won!</strong><br>Enemy fleet destroyed<br>Shooting accuracy: <strong>${controller.playerAccuracy()}%</strong>`);
           }
         }
         return true;
@@ -132,15 +133,21 @@ const model = {
 // * ####################################
 const view = {
   displayVictory(msg) {
-    const feedback = document.getElementById('display-victory-msg'); // Display the victory message argument
-    feedback.firstElementChild.innerHTML = msg;
-    document.querySelector('body').classList.add('victoryBody'); // Change background to clear blue
-    document.querySelectorAll('td').forEach(x => x.classList.add('victoryTd')); // Set <td>s hover cursor to not-allowed
+    document.getElementById('victory-msg').innerHTML = msg; // ! Display method's argument as victory message (possible spaghetti code here)
+    document.getElementById('victory-msg').classList.remove('hidden'); // remove "hidden" class from html recipient
 
-    // Set Start Game button to "New Game" with pulsating animation
+    document.querySelector('body').classList.add('victoryBody'); // Change page background to clear blue
+    document.querySelectorAll('td').forEach(x => x.classList.add('victoryTd')); // ! Set <td>s hover cursor to not-allowed. Instead, the onhover listeners should be removed
+
+    // Set Start Game button value to "New Game" with pulsating animation
     const startBtn = document.getElementById('start-game-btn');
     startBtn.value = 'NEW GAME?';
     startBtn.classList.add('pulsate-fwd');
+
+    // Bring back USER INPUT area to full opacity...
+    const gridSizeInput = document.getElementById('set-grid-size');
+    // ... and to display: block
+    gridSizeInput.classList.remove('no-opacity', 'hidden');
   },
 
   displayHit(loc) {
@@ -191,6 +198,30 @@ const view = {
       e.setAttribute('id', board[index]);
     });
   },
+
+  // Display live game stats
+  liveStats() {
+    // 1. Hide the grid size input area...
+    const gridSizeInput = document.getElementById('set-grid-size');
+    // ... with opacity ...
+    gridSizeInput.classList.add('no-opacity');
+    // ... and removing it from the DOM entirely with a setTimeout delay.
+    setTimeout(() => {
+      gridSizeInput.classList.add('hidden');
+    }, 1000);
+
+    // 2. Show the liveStats div containing game information
+    const liveStats = document.getElementById('live-stats');
+    liveStats.classList.remove('hidden'); // brings back in the DOM
+    liveStats.classList.add('full-opacity'); // sets opacity to 1
+
+    // Set the turn (guesses) counter to zero
+    this.updateStats();
+  },
+
+  updateStats() {
+    document.getElementById('turn').innerText = model.guesses;
+  }
 };
 
 // * ####################################
@@ -224,9 +255,11 @@ const controller = {
 // * Starting all game methods onload
 // * ####################################
 function init() {
-  controller.gridSize(); // set grid size to default or according to user input
-  controller.startGame(); //
   model.blankSlate(); // reset model tracking properties to zero
+  view.liveStats(); // Hide user input area and Show live game stats
+
+  controller.gridSize(); // set grid size to default or according to user input
+  controller.startGame(); // hook START GAME btn with click listener
   model.createGrid();
   model.generateShipLocations();
   view.makeHeaderClasses();
@@ -236,4 +269,4 @@ function init() {
   model.ships.forEach(x => console.log(x.positions));
 }
 
-window.onload = init;
+window.onload = controller.startGame();

@@ -34,6 +34,11 @@ h2 {
   font-weight: 400;
 }
 
+main {
+  /* Force display on grid row n°2 due to Grid Size user input being removed from DOM (display: none) */
+  grid-row: 2;
+}
+
 /*----------------------------------------*
  * INTERACTIVE user input & visual feedback
  *----------------------------------------*/
@@ -42,6 +47,8 @@ h2 {
   align-self: end;
   padding-bottom: 1rem;
   padding-top: 1rem;
+  /* Difficulty/Grid size selector animation */
+  transition: 1s opacity ease;
 }
 
 input {
@@ -90,9 +97,27 @@ input[type=button]:focus {
   outline: 0;
 }
 
-#display-victory-msg {
+#live-stats {
   text-align: left;
+  /* grid-row: 2; */
+  transition: 1s all ease;
+  font-size: 1.5rem;
+}
 
+#turn {
+  font-weight: bold;
+}
+
+.hidden {
+  display: none;
+}
+
+.no-opacity {
+  opacity: 0;
+}
+
+.full-opacity {
+  opacity: 1;
 }
 
 /*----------------------------------------*
@@ -103,5 +128,10 @@ input[type=button]:focus {
   body {
     grid-template-columns: 1fr 1fr;
     justify-items: left;
+  }
+
+  #live-stats {
+    /* Force display on grid row n°2 due to Grid Size user input being removed from DOM (display: none) */
+    grid-row: 2;
   }
 }
