@@ -35,7 +35,7 @@ h2 {
 }
 
 main {
-  /* force display on grid row n°2 due to Grid Size selector getting display: none */
+  /* Force display on grid row n°2 due to Grid Size user input being removed from DOM (display: none) */
   grid-row: 2;
 }
 
@@ -97,11 +97,10 @@ input[type=button]:focus {
   outline: 0;
 }
 
-#display-victory-msg {
+#live-stats {
   text-align: left;
-
-  /* force display on grid row n°2 due to Grid Size selector getting display: none */
-  grid-row: 2;
+  /* grid-row: 2; */
+  transition: 1s all ease;
 }
 
 .hidden {
@@ -112,6 +111,10 @@ input[type=button]:focus {
   opacity: 0;
 }
 
+.full-opacity {
+  opacity: 1;
+}
+
 /*----------------------------------------*
  * RESPONSIVE LAYOUT:
  * 2x2 Grid display on desktop
@@ -120,5 +123,10 @@ input[type=button]:focus {
   body {
     grid-template-columns: 1fr 1fr;
     justify-items: left;
+  }
+
+  #live-stats {
+    /* Force display on grid row n°2 due to Grid Size user input being removed from DOM (display: none) */
+    grid-row: 2;
   }
 }
