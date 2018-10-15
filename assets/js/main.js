@@ -13,6 +13,18 @@ const model = {
   shipsSunk: 0,
   shipLength: 4,
   guesses: 0, // tracks the number of guesses from the fire() method
+  soundEffects: {
+    location: '/assets/audio/',
+    files: {
+      cannon: ['cannon01.mp3', 'cannon02.mp3', 'cannon03.mp3', 'cannon04.mp3'],
+      hit: ['hit.mp3'],
+      sunk: ['sunk.mp3'],
+    },
+    genRandEffect(type) {
+      let soundArray = this.files[type];
+      return this.location + soundArray[Math.floor(Math.random() * soundArray.length)];
+    },
+  },
 
   createGrid() {
     this.createTable(this.rows, this.columns);
@@ -51,13 +63,12 @@ const model = {
         ship.hits[locIndex] = 'hit';
         // and update the DOM with the displayHit() view method
         view.displayHit(loc);
+        new Audio(model.soundEffects.genRandEffect('hit')).play();
 
-        // THEN check if the ship has been sunk...
         if (this.isSunk(ship)) {
-          // ... if so increment the sunk ships count
           this.shipsSunk++;
+          new Audio(model.soundEffects.genRandEffect('sunk')).play();
 
-          // FINALLY, check if the number of sunk ships is equal to the total number of enemy ships...
           if (this.shipsSunk === this.numShips) {
             // * * * * * * * * *
             // * ...if so, then it's a VICTORY
@@ -71,6 +82,8 @@ const model = {
         return true;
       }
     }
+    // If guess is a miss, play a cannon sound only
+    new Audio(model.soundEffects.genRandEffect('cannon')).play();
     view.displayMiss(loc);
     return false;
   },
