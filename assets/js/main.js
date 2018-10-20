@@ -4,7 +4,6 @@
 const model = {
   rows: document.getElementById('num_rows').value,
   columns: document.getElementById('num_cols').value,
-  numShips: 3, // total number of ships
   ships: [
     { positions: ['00', '00', '00', '00', '00'], hits: [], name: 'Aircraft Carrier' },
     { positions: ['00', '00', '00', '00'], hits: [], name: 'Battleship' },
@@ -15,7 +14,6 @@ const model = {
     { positions: ['00'], hits: [], name: 'Submarine' },
   ],
   shipsSunk: 0,
-  shipLength: 4,
   guesses: 0, // tracks the number of guesses from the fire() method
   soundEffects: {
     location: '/assets/audio/',
