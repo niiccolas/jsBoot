@@ -6,9 +6,13 @@ const model = {
   columns: document.getElementById('num_cols').value,
   numShips: 3, // total number of ships
   ships: [
-    { positions: ['00', '00', '00'], hits: [] },
-    { positions: ['00', '00', '00'], hits: [] },
-    { positions: ['00', '00', '00'], hits: [] },
+    { positions: ['00', '00', '00', '00', '00'], hits: [], name: 'Aircraft Carrier' },
+    { positions: ['00', '00', '00', '00'], hits: [], name: 'Battleship' },
+    { positions: ['00', '00', '00'], hits: [], name: 'Cruiser' },
+    { positions: ['00', '00'], hits: [], name: 'Destroyer' },
+    { positions: ['00', '00'], hits: [], name: 'Destroyer' },
+    { positions: ['00'], hits: [], name: 'Submarine' },
+    { positions: ['00'], hits: [], name: 'Submarine' },
   ],
   shipsSunk: 0,
   shipLength: 4,
@@ -67,7 +71,7 @@ const model = {
           this.shipsSunk += 1;
           new Audio(model.soundEffects.genRandEffect('sunk')).play();
 
-          if (this.shipsSunk === this.numShips) {
+          if (this.shipsSunk === this.ships.length) {
             // * * * * * * * * *
             // * ...if so, then it's a VICTORY
             // * * * * * * * * *
@@ -86,8 +90,8 @@ const model = {
     return false;
   },
 
-  isSunk(ship) {
-    for (let i = 0; i < this.shipLength; i += 1) {
+  isSunk(ship) { // ship = a ship object in the ships array
+    for (let i = 0; i < ship.positions.length; i += 1) {
       if (ship.hits[i] !== 'hit') {
         return false;
       }
@@ -97,30 +101,31 @@ const model = {
 
   generateShipLocations() {
     let locations;
-    for (let i = 0; i < this.numShips; i += 1) {
+    const numShips = this.ships.length; // how many ships are in the grid
+    for (let i = 0; i < numShips; i += 1) {
       do {
-        locations = this.generateShip();
+        locations = this.generateShip(this.ships[i].positions.length);
       } while (this.collision(locations));
       this.ships[i].positions = locations;
     }
     return locations;
   },
 
-  generateShip() {
+  generateShip(length) {
     const randomDirection = Math.floor(Math.random() * 2); // 0 for vertical 1 for horizontal
     let row;
     let col;
 
     if (randomDirection) {
       row = Math.floor(Math.random() * this.rows);
-      col = Math.floor(Math.random() * (this.columns - (this.shipLength + 1)));
+      col = Math.floor(Math.random() * (this.columns - (length + 1)));
     } else {
-      row = Math.floor(Math.random() * (this.rows - (this.shipLength + 1)));
+      row = Math.floor(Math.random() * (this.rows - (length + 1)));
       col = Math.floor(Math.random() * this.columns);
     }
 
     const newShipLocations = [];
-    for (let i = 0; i < this.shipLength; i += 1) {
+    for (let i = 0; i < length; i += 1) {
       if (randomDirection) {
         newShipLocations.push(`${row}${col + i}`);
       } else {
