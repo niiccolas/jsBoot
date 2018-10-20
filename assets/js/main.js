@@ -36,9 +36,9 @@ const model = {
     gameGrid.innerHTML = ''; // clean the existing grid, if any
 
     // populate the <table> with ...
-    for (let i = 0; i < rows; i++) { // ... as many <tr> as passed to "rows"
+    for (let i = 0; i < rows; i += 1) { // ... as many <tr> as passed to "rows"
       const tr = table.insertRow();
-      for (let j = 0; j < cols; j++) { // ... as many <td> as passed to "cols"
+      for (let j = 0; j < cols; j += 1) { // ... as many <td> as passed to "cols"
         tr.insertCell();
       }
     }
@@ -48,13 +48,11 @@ const model = {
   fire(loc) {
     // Once a cell has been fired on, remove the click event listener
     document.getElementById(loc).removeEventListener('click', controller.guessToFire);
-    // Increment the guesses property
-    model.guesses++;
-    // Update the DOM turn counter
-    view.updateStats();
+    model.guesses += 1; // Increment the guesses property
+    view.updateStats(); // Update the DOM turn counter
 
     // Check the ships array in the model
-    for (let i = 0, s = this.ships; i < s.length; i++) {
+    for (let i = 0, s = this.ships; i < s.length; i += 1) {
       const ship = s[i];
       // If current location (loc) matches a ship position
       const locIndex = ship.positions.indexOf(loc);
@@ -66,7 +64,7 @@ const model = {
         new Audio(model.soundEffects.genRandEffect('hit')).play();
 
         if (this.isSunk(ship)) {
-          this.shipsSunk++;
+          this.shipsSunk += 1;
           new Audio(model.soundEffects.genRandEffect('sunk')).play();
 
           if (this.shipsSunk === this.numShips) {
@@ -89,7 +87,7 @@ const model = {
   },
 
   isSunk(ship) {
-    for (let i = 0; i < this.shipLength; i++) {
+    for (let i = 0; i < this.shipLength; i += 1) {
       if (ship.hits[i] !== 'hit') {
         return false;
       }
@@ -99,7 +97,7 @@ const model = {
 
   generateShipLocations() {
     let locations;
-    for (let i = 0; i < this.numShips; i++) {
+    for (let i = 0; i < this.numShips; i += 1) {
       do {
         locations = this.generateShip();
       } while (this.collision(locations));
@@ -122,7 +120,7 @@ const model = {
     }
 
     const newShipLocations = [];
-    for (let i = 0; i < this.shipLength; i++) {
+    for (let i = 0; i < this.shipLength; i += 1) {
       if (randomDirection) {
         newShipLocations.push(`${row}${col + i}`);
       } else {
@@ -133,9 +131,9 @@ const model = {
   },
 
   collision(locations) {
-    for (let i = 0; i < this.numShips; i++) {
+    for (let i = 0; i < this.numShips; i += 1) {
       const ship = this.ships[i];
-      for (let j = 0; j < locations.length; j++) {
+      for (let j = 0; j < locations.length; j += 1) {
         if (ship.positions.indexOf(locations[j]) >= 0) {
           return true;
         }
@@ -190,7 +188,7 @@ const view = {
     const columns = document.querySelectorAll('td');
     const rows = document.querySelectorAll('tr');
 
-    for (let i = 0; i < model.rows; i++) {
+    for (let i = 0; i < model.rows; i += 1) {
       const rowHeader = document.createElement('div'); // create <div> container for ROW headers
       const rowHeaderContent = document.createTextNode(i + 1); // fill header with row number +1
       rowHeader.appendChild(rowHeaderContent); //
@@ -198,7 +196,7 @@ const view = {
       rows[i].firstElementChild.appendChild(rowHeader);
     }
 
-    for (let i = 0; i < model.columns; i++) {
+    for (let i = 0; i < model.columns; i += 1) {
       const colHeader = document.createElement('div'); // create <div> container for COL headers
       // insert alphabetic letter as column title
       const colTitle = document.createTextNode(alphabet[i].toLocaleUpperCase());
@@ -215,8 +213,8 @@ const view = {
     const columns = document.getElementsByClassName('header_column');
     const cells = document.querySelectorAll('td');
     const board = [];
-    for (let i = 0; i < rows.length; i++) { // Generate IDs from rows and columns length
-      for (let j = 0; j < columns.length; j++) {
+    for (let i = 0; i < rows.length; i += 1) { // Generate IDs from rows and columns length
+      for (let j = 0; j < columns.length; j += 1) {
         board.push(`${i}${j}`);
       }
     }
