@@ -81,6 +81,18 @@ td.miss:hover {
   top: 3px;
 }
 
+/* god-mode: reveal all boats */
+.god-mode {
+  background: greenyellow;
+}
+
+.god-mode::after {
+  content: "🛥️";
+  font-size: calc(4) + 'em';
+  position: relative;
+  top: 3px;
+}
+
 /*----------------------------------------*
  * RESPONSIVE LAYOUT:
  * Smaller cells and fonts on mobile

@@ -4,14 +4,16 @@
 const model = {
   rows: document.getElementById('num_rows').value,
   columns: document.getElementById('num_cols').value,
-  numShips: 3, // total number of ships
   ships: [
-    { positions: ['00', '00', '00'], hits: [] },
-    { positions: ['00', '00', '00'], hits: [] },
-    { positions: ['00', '00', '00'], hits: [] },
+    { positions: ['00', '00', '00', '00', '00'], hits: [], name: 'Aircraft Carrier' },
+    { positions: ['00', '00', '00', '00'], hits: [], name: 'Battleship' },
+    { positions: ['00', '00', '00'], hits: [], name: 'Cruiser' },
+    { positions: ['00', '00'], hits: [], name: 'Destroyer' },
+    { positions: ['00', '00'], hits: [], name: 'Destroyer' },
+    { positions: ['00'], hits: [], name: 'Submarine' },
+    { positions: ['00'], hits: [], name: 'Submarine' },
   ],
   shipsSunk: 0,
-  shipLength: 4,
   guesses: 0, // tracks the number of guesses from the fire() method
   soundEffects: {
     location: '/assets/audio/',
@@ -36,9 +38,9 @@ const model = {
     gameGrid.innerHTML = ''; // clean the existing grid, if any
 
     // populate the <table> with ...
-    for (let i = 0; i < rows; i++) { // ... as many <tr> as passed to "rows"
+    for (let i = 0; i < rows; i += 1) { // ... as many <tr> as passed to "rows"
       const tr = table.insertRow();
-      for (let j = 0; j < cols; j++) { // ... as many <td> as passed to "cols"
+      for (let j = 0; j < cols; j += 1) { // ... as many <td> as passed to "cols"
         tr.insertCell();
       }
     }
@@ -48,13 +50,11 @@ const model = {
   fire(loc) {
     // Once a cell has been fired on, remove the click event listener
     document.getElementById(loc).removeEventListener('click', controller.guessToFire);
-    // Increment the guesses property
-    model.guesses++;
-    // Update the DOM turn counter
-    view.updateStats();
+    model.guesses += 1; // Increment the guesses property
+    view.updateStats(); // Update the DOM turn counter
 
     // Check the ships array in the model
-    for (let i = 0, s = this.ships; i < s.length; i++) {
+    for (let i = 0, s = this.ships; i < s.length; i += 1) {
       const ship = s[i];
       // If current location (loc) matches a ship position
       const locIndex = ship.positions.indexOf(loc);
@@ -66,10 +66,10 @@ const model = {
         new Audio(model.soundEffects.genRandEffect('hit')).play();
 
         if (this.isSunk(ship)) {
-          this.shipsSunk++;
+          this.shipsSunk += 1;
           new Audio(model.soundEffects.genRandEffect('sunk')).play();
 
-          if (this.shipsSunk === this.numShips) {
+          if (this.shipsSunk === this.ships.length) {
             // * * * * * * * * *
             // * ...if so, then it's a VICTORY
             // * * * * * * * * *
@@ -88,8 +88,8 @@ const model = {
     return false;
   },
 
-  isSunk(ship) {
-    for (let i = 0; i < this.shipLength; i++) {
+  isSunk(ship) { // ship = a ship object in the ships array
+    for (let i = 0; i < ship.positions.length; i += 1) {
       if (ship.hits[i] !== 'hit') {
         return false;
       }
@@ -99,30 +99,31 @@ const model = {
 
   generateShipLocations() {
     let locations;
-    for (let i = 0; i < this.numShips; i++) {
+    const numShips = this.ships.length; // how many ships are in the grid
+    for (let i = 0; i < numShips; i += 1) {
       do {
-        locations = this.generateShip();
+        locations = this.generateShip(this.ships[i].positions.length);
       } while (this.collision(locations));
       this.ships[i].positions = locations;
     }
     return locations;
   },
 
-  generateShip() {
+  generateShip(length) {
     const randomDirection = Math.floor(Math.random() * 2); // 0 for vertical 1 for horizontal
     let row;
     let col;
 
     if (randomDirection) {
       row = Math.floor(Math.random() * this.rows);
-      col = Math.floor(Math.random() * (this.columns - (this.shipLength + 1)));
+      col = Math.floor(Math.random() * (this.columns - (length + 1)));
     } else {
-      row = Math.floor(Math.random() * (this.rows - (this.shipLength + 1)));
+      row = Math.floor(Math.random() * (this.rows - (length + 1)));
       col = Math.floor(Math.random() * this.columns);
     }
 
     const newShipLocations = [];
-    for (let i = 0; i < this.shipLength; i++) {
+    for (let i = 0; i < length; i += 1) {
       if (randomDirection) {
         newShipLocations.push(`${row}${col + i}`);
       } else {
@@ -133,9 +134,9 @@ const model = {
   },
 
   collision(locations) {
-    for (let i = 0; i < this.numShips; i++) {
+    for (let i = 0; i < this.numShips; i += 1) {
       const ship = this.ships[i];
-      for (let j = 0; j < locations.length; j++) {
+      for (let j = 0; j < locations.length; j += 1) {
         if (ship.positions.indexOf(locations[j]) >= 0) {
           return true;
         }
@@ -190,7 +191,7 @@ const view = {
     const columns = document.querySelectorAll('td');
     const rows = document.querySelectorAll('tr');
 
-    for (let i = 0; i < model.rows; i++) {
+    for (let i = 0; i < model.rows; i += 1) {
       const rowHeader = document.createElement('div'); // create <div> container for ROW headers
       const rowHeaderContent = document.createTextNode(i + 1); // fill header with row number +1
       rowHeader.appendChild(rowHeaderContent); //
@@ -198,7 +199,7 @@ const view = {
       rows[i].firstElementChild.appendChild(rowHeader);
     }
 
-    for (let i = 0; i < model.columns; i++) {
+    for (let i = 0; i < model.columns; i += 1) {
       const colHeader = document.createElement('div'); // create <div> container for COL headers
       // insert alphabetic letter as column title
       const colTitle = document.createTextNode(alphabet[i].toLocaleUpperCase());
@@ -215,8 +216,8 @@ const view = {
     const columns = document.getElementsByClassName('header_column');
     const cells = document.querySelectorAll('td');
     const board = [];
-    for (let i = 0; i < rows.length; i++) { // Generate IDs from rows and columns length
-      for (let j = 0; j < columns.length; j++) {
+    for (let i = 0; i < rows.length; i += 1) { // Generate IDs from rows and columns length
+      for (let j = 0; j < columns.length; j += 1) {
         board.push(`${i}${j}`);
       }
     }
@@ -251,6 +252,10 @@ const view = {
   updateStats() {
     document.getElementById('turn').innerText = model.guesses;
   },
+
+  godMode() {
+    model.ships.forEach(x => x.positions.forEach(y => document.getElementById(y).setAttribute('class', 'god-mode')));
+  },
 };
 
 // * ####################################
@@ -283,10 +288,9 @@ const controller = {
   },
 
   playerAccuracy() {
-    // number of ships multiplied by their length is the ideal num. of guesses
-    const idealGuesses = model.numShips * model.shipLength;
+    const totalShipCells = model.ships.reduce((tot, val) => tot + val.positions.length, 0);
     // return a shooting accuracy percentage without decimals
-    return ((idealGuesses / model.guesses) * 100).toFixed();
+    return ((totalShipCells / model.guesses) * 100).toFixed();
   },
 };
 
