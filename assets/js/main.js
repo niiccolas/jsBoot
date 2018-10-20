@@ -252,6 +252,10 @@ const view = {
   updateStats() {
     document.getElementById('turn').innerText = model.guesses;
   },
+
+  godMode() {
+    model.ships.forEach(x => x.positions.forEach(y => document.getElementById(y).setAttribute('class', 'god-mode')));
+  },
 };
 
 // * ####################################
