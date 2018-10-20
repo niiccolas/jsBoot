@@ -284,10 +284,9 @@ const controller = {
   },
 
   playerAccuracy() {
-    // number of ships multiplied by their length is the ideal num. of guesses
-    const idealGuesses = model.numShips * model.shipLength;
+    const totalShipCells = model.ships.reduce((tot, val) => tot + val.positions.length, 0);
     // return a shooting accuracy percentage without decimals
-    return ((idealGuesses / model.guesses) * 100).toFixed();
+    return ((totalShipCells / model.guesses) * 100).toFixed();
   },
 };
 
