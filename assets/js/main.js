@@ -5,7 +5,11 @@ const model = {
   rows: document.getElementById('num_rows').value,
   columns: document.getElementById('num_cols').value,
   ships: [
-    { positions: ['00', '00', '00', '00', '00'], hits: [], name: 'Aircraft Carrier' },
+    {
+      positions: ['00', '00', '00', '00', '00'],
+      hits: [],
+      name: 'Aircraft Carrier',
+    },
     { positions: ['00', '00', '00', '00'], hits: [], name: 'Battleship' },
     { positions: ['00', '00', '00'], hits: [], name: 'Cruiser' },
     { positions: ['00', '00'], hits: [], name: 'Destroyer' },
@@ -16,7 +20,7 @@ const model = {
   shipsSunk: 0,
   guesses: 0, // tracks the number of guesses from the fire() method
   soundEffects: {
-    location: '/assets/audio/',
+    location: './assets/audio/',
     files: {
       cannon: ['cannon01.mp3', 'cannon02.mp3', 'cannon03.mp3', 'cannon04.mp3'],
       hit: ['hit.mp3'],
@@ -24,7 +28,10 @@ const model = {
     },
     genRandEffect(type) {
       let soundArray = this.files[type];
-      return this.location + soundArray[Math.floor(Math.random() * soundArray.length)];
+      return (
+        this.location +
+        soundArray[Math.floor(Math.random() * soundArray.length)]
+      );
     },
   },
 
@@ -38,9 +45,11 @@ const model = {
     gameGrid.innerHTML = ''; // clean the existing grid, if any
 
     // populate the <table> with ...
-    for (let i = 0; i < rows; i += 1) { // ... as many <tr> as passed to "rows"
+    for (let i = 0; i < rows; i += 1) {
+      // ... as many <tr> as passed to "rows"
       const tr = table.insertRow();
-      for (let j = 0; j < cols; j += 1) { // ... as many <td> as passed to "cols"
+      for (let j = 0; j < cols; j += 1) {
+        // ... as many <td> as passed to "cols"
         tr.insertCell();
       }
     }
@@ -49,7 +58,9 @@ const model = {
 
   fire(loc) {
     // Once a cell has been fired on, remove the click event listener
-    document.getElementById(loc).removeEventListener('click', controller.guessToFire);
+    document
+      .getElementById(loc)
+      .removeEventListener('click', controller.guessToFire);
     model.guesses += 1; // Increment the guesses property
     view.updateStats(); // Update the DOM turn counter
 
@@ -76,7 +87,9 @@ const model = {
             // Remove click event listener from remaining <td>
             controller.prohibitGuess();
             // Update the view with a victory message
-            view.displayVictory(`<strong>You won!</strong><br>Enemy fleet destroyed<br>Shooting accuracy: <strong>${controller.playerAccuracy()}%</strong>`);
+            view.displayVictory(
+              `<strong>You won!</strong><br>Enemy fleet destroyed<br>Shooting accuracy: <strong>${controller.playerAccuracy()}%</strong>`
+            );
           }
         }
         return true;
@@ -88,7 +101,8 @@ const model = {
     return false;
   },
 
-  isSunk(ship) { // ship = a ship object in the ships array
+  isSunk(ship) {
+    // ship = a ship object in the ships array
     for (let i = 0; i < ship.positions.length; i += 1) {
       if (ship.hits[i] !== 'hit') {
         return false;
@@ -127,7 +141,7 @@ const model = {
       if (randomDirection) {
         newShipLocations.push(`${row}${col + i}`);
       } else {
-        newShipLocations.push(`${row + i }${col}`);
+        newShipLocations.push(`${row + i}${col}`);
       }
     }
     return newShipLocations;
@@ -152,7 +166,7 @@ const model = {
   blankSlate() {
     this.shipsSunk = 0;
     this.guesses = 0;
-    this.ships.forEach(x => x.hits = []);
+    this.ships.forEach(x => (x.hits = []));
   },
 };
 
@@ -187,7 +201,9 @@ const view = {
 
   makeHeaderClasses() {
     // helper alphabet array for cols naming
-    const alphabet = [...Array(26).keys()].map(i => String.fromCharCode(i + 97));
+    const alphabet = [...Array(26).keys()].map(i =>
+      String.fromCharCode(i + 97)
+    );
     const columns = document.querySelectorAll('td');
     const rows = document.querySelectorAll('tr');
 
@@ -216,12 +232,14 @@ const view = {
     const columns = document.getElementsByClassName('header_column');
     const cells = document.querySelectorAll('td');
     const board = [];
-    for (let i = 0; i < rows.length; i += 1) { // Generate IDs from rows and columns length
+    for (let i = 0; i < rows.length; i += 1) {
+      // Generate IDs from rows and columns length
       for (let j = 0; j < columns.length; j += 1) {
         board.push(`${i}${j}`);
       }
     }
-    cells.forEach((e, index) => { // Tag each cell with a board ID
+    cells.forEach((e, index) => {
+      // Tag each cell with a board ID
       e.setAttribute('id', board[index]);
     });
   },
@@ -254,7 +272,11 @@ const view = {
   },
 
   godMode() {
-    model.ships.forEach(x => x.positions.forEach(y => document.getElementById(y).setAttribute('class', 'god-mode')));
+    model.ships.forEach(x =>
+      x.positions.forEach(y =>
+        document.getElementById(y).setAttribute('class', 'god-mode')
+      )
+    );
   },
 };
 
@@ -264,12 +286,16 @@ const view = {
 const controller = {
   processGuess() {
     // Add to each <td> a click event listener that runs the guessToFire() method
-    document.querySelectorAll('td').forEach(x => x.addEventListener('click', this.guessToFire));
+    document
+      .querySelectorAll('td')
+      .forEach(x => x.addEventListener('click', this.guessToFire));
   },
 
   prohibitGuess() {
     // Remove from all <td> the click event listener that runs the guessToFire() method
-    document.querySelectorAll('td').forEach(x => x.removeEventListener('click', this.guessToFire));
+    document
+      .querySelectorAll('td')
+      .forEach(x => x.removeEventListener('click', this.guessToFire));
   },
 
   guessToFire(y) {
@@ -288,7 +314,10 @@ const controller = {
   },
 
   playerAccuracy() {
-    const totalShipCells = model.ships.reduce((tot, val) => tot + val.positions.length, 0);
+    const totalShipCells = model.ships.reduce(
+      (tot, val) => tot + val.positions.length,
+      0
+    );
     // return a shooting accuracy percentage without decimals
     return ((totalShipCells / model.guesses) * 100).toFixed();
   },
